@@ -21,13 +21,25 @@ class Telegraph {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
     };
-    Map<String, String?> queryParameters = {};
+    Map<String, dynamic> queryParameters = {};
 
     if (method != "post") {
       parameters.forEach((key, value) {
-        queryParameters[key] = value;
+        if (value == null) {
+          return;
+        }
+        if (value is String == false) {
+          if (value is Map || value is List) {
+            queryParameters[key] = json.encode(value);
+          } else {
+            queryParameters[key] = value.toString();
+          }
+        } else {
+          queryParameters[key] = value;
+        }
       });
     }
+    
     List<String> pathSegments = [
       method,
     ];
@@ -52,10 +64,17 @@ class Telegraph {
       return result;
     }
     if (result["result"] is Map) {
-      result["result"]["@type"] = method.replaceAll(RegExp("^(create|get)", caseSensitive: false), "").toLowerCaseFirstData();
-      return result["result"];
+      Map new_data = {
+        "@type": method.replaceAll(RegExp("^(create|get)", caseSensitive: false), "").toLowerCaseFirstData(),
+        ...(result["result"] as Map),
+      };
+
+      return new_data;
     }
-    return result["result"];
+    return {
+      "@type": "ok",
+      ...result,
+    };
   }
 
   /// Details: https://telegra.ph/api#createAccount
@@ -144,8 +163,8 @@ class Telegraph {
     required String title,
     String? author_name,
     String? author_url,
-    required String content,
-    bool return_content = false,
+    required List<Map> content,
+    bool return_content = true,
   }) async {
     Map parameters = {
       "access_token": access_token,
@@ -174,10 +193,10 @@ class Telegraph {
     required String access_token,
     required String path,
     required String title,
-    required String content,
+    required List<Map> content,
     String? author_name,
     String? author_url,
-    bool return_content = false,
+    bool return_content = true,
   }) async {
     Map parameters = {
       "access_token": access_token,
@@ -205,7 +224,7 @@ class Telegraph {
   /// DETAILS: https://telegra.ph/api#getPage
   Future<Map> getPage({
     required String path,
-    bool return_content = false,
+    bool return_content = true,
   }) async {
     Map parameters = {
       "return_content": return_content,
@@ -240,16 +259,19 @@ class Telegraph {
   }
 
   /// DETAILS: https://telegra.ph/api#getViews
-  Future<Map> getViews({required String path, required int year, required int month, required int day, int? hour}) async {
+  Future<Map> getViews({
+    required String path,
+    int? year,
+    int? month,
+    int? day,
+    int? hour,
+  }) async {
     Map parameters = {
       "year": year,
       "month": month,
       "day": day,
+      "hour": hour,
     };
-
-    if (hour != null) {
-      parameters["hour"] = hour;
-    }
 
     Map result = await invoke(
       method: "getViews",

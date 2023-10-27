@@ -10,6 +10,7 @@ environment:
 dependencies:
   general_lib: ^0.0.1
   http: ^1.1.0
+  markdown: ^7.1.1
   # path: ^1.8.0
 
 dev_dependencies:
