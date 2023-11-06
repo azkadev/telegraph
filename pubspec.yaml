@@ -1,6 +1,6 @@
 name: telegraph
 description: A Library Telegraph.
-version: 0.0.0
+version: 0.0.2
 repository: https://github.com/azkadev/telegraph.git
 
 environment:

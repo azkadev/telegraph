@@ -39,7 +39,7 @@ class Telegraph {
         }
       });
     }
-    
+
     List<String> pathSegments = [
       method,
     ];
@@ -58,14 +58,21 @@ class Telegraph {
     } else {
       response = await get(uri, headers: headers);
     }
-    Map result = json.decode(response.body);
+    Map result = () {
+      try {
+        return json.decode(response.body);
+      } catch (e) {
+        // print(response.body);
+        return {"error_data": response.body};
+      }
+    }();
     if (result["ok"] != true) {
       result["@type"] = "error";
       return result;
     }
     if (result["result"] is Map) {
       Map new_data = {
-        "@type": method.replaceAll(RegExp("^(create|get)", caseSensitive: false), "").toLowerCaseFirstData(),
+        "@type": method.replaceAll(RegExp("^(create|get|copy)", caseSensitive: false), "").toLowerCaseFirstData(),
         ...(result["result"] as Map),
       };
 
@@ -163,7 +170,7 @@ class Telegraph {
     required String title,
     String? author_name,
     String? author_url,
-    required List<Map> content,
+    required List content,
     bool return_content = true,
   }) async {
     Map parameters = {
@@ -180,10 +187,7 @@ class Telegraph {
       parameters["author_url"] = author_url;
     }
 
-    Map result = await invoke(
-      method: "createPage",
-      parameters: parameters,
-    );
+    Map result = await invoke(method: "createPage", parameters: parameters, method_request: "post");
 
     return result;
   }
@@ -193,7 +197,7 @@ class Telegraph {
     required String access_token,
     required String path,
     required String title,
-    required List<Map> content,
+    required List content,
     String? author_name,
     String? author_url,
     bool return_content = true,
@@ -216,6 +220,7 @@ class Telegraph {
       method: "editPage",
       parameters: parameters,
       path_api: path,
+      method_request: "post",
     );
 
     return result;
@@ -256,6 +261,26 @@ class Telegraph {
       // path_api: path,
     );
     return result;
+  }
+
+  /// DETAILS: https://telegra.ph/api
+  Future<Map> copyPage({
+    required String access_token,
+    required String path,
+    String? title,
+    String? author_name,
+    String? author_url,
+    bool return_content = true,
+  }) async {
+    Map page_data = await getPage(path: path, return_content: true);
+    return await createPage(
+      access_token: access_token,
+      title: title ?? page_data["title"] ?? DateTime.now().toString(),
+      author_name: author_name,
+      author_url: author_url,
+      content: page_data["content"],
+      return_content: return_content,
+    );
   }
 
   /// DETAILS: https://telegra.ph/api#getViews
