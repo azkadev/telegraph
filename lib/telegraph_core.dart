@@ -8,14 +8,25 @@ import "package:general_lib/general_lib.dart";
 /// DOCS: https://telegra.ph/api
 class Telegraph {
   Uri telegraph_api = Uri.parse("https://api.telegra.ph");
-  Telegraph();
+  late Client http_client;
+  Telegraph({
+    Client? httpClient,
+  }) {
+    if (httpClient != null) {
+      http_client = httpClient;
+    } else {
+      http_client = Client();
+    }
+  }
 
   Future<Map> invoke({
     required String method,
     required Map parameters,
     String? path_api,
     String method_request = "get",
+    Client? httpClient,
   }) async {
+    httpClient ??= http_client;
     Map<String, String> headers = {
       'Accept': 'application/json',
       "Access-Control-Allow-Origin": "*",
@@ -54,9 +65,9 @@ class Telegraph {
     );
     late Response response;
     if (method == "post") {
-      response = await post(uri, body: json.encode(parameters), headers: headers);
+      response = await httpClient.post(uri, body: json.encode(parameters), headers: headers);
     } else {
-      response = await get(uri, headers: headers);
+      response = await httpClient.get(uri, headers: headers);
     }
     Map result = () {
       try {
@@ -85,7 +96,12 @@ class Telegraph {
   }
 
   /// Details: https://telegra.ph/api#createAccount
-  Future<Map> createAccount({required String short_name, required String author_name, String? author_url}) async {
+  Future<Map> createAccount({
+    required String short_name,
+    required String author_name,
+    String? author_url,
+    Client? httpClient,
+  }) async {
     Map parameters = {
       "short_name": short_name,
       "author_name": author_name,
@@ -94,7 +110,11 @@ class Telegraph {
     if (author_url != null) {
       parameters["author_url"] = author_url;
     }
-    Map result = await invoke(method: "createAccount", parameters: parameters);
+    Map result = await invoke(
+      method: "createAccount",
+      parameters: parameters,
+      httpClient: httpClient,
+    );
 
     return result;
   }
@@ -105,6 +125,7 @@ class Telegraph {
     String? short_name,
     String? author_name,
     String? author_url,
+    Client? httpClient,
   }) async {
     Map parameters = {
       "access_token": access_token,
@@ -123,6 +144,7 @@ class Telegraph {
     Map result = await invoke(
       method: "editAccountInfo",
       parameters: parameters,
+      httpClient: httpClient,
     );
 
     return result;
@@ -132,6 +154,7 @@ class Telegraph {
   Future<Map> getAccountInfo({
     required String access_token,
     List<String>? fields,
+    Client? httpClient,
   }) async {
     Map parameters = {
       "access_token": access_token,
@@ -143,6 +166,7 @@ class Telegraph {
     Map result = await invoke(
       method: "getAccountInfo",
       parameters: parameters,
+      httpClient: httpClient,
     );
 
     return result;
@@ -151,6 +175,7 @@ class Telegraph {
   /// DETAILS: https://telegra.ph/api#revokeAccessToken
   Future<Map> revokeAccessToken({
     required String access_token,
+    Client? httpClient,
   }) async {
     Map parameters = {
       "access_token": access_token,
@@ -159,6 +184,7 @@ class Telegraph {
     Map result = await invoke(
       method: "revokeAccessToken",
       parameters: parameters,
+      httpClient: httpClient,
     );
 
     return result;
@@ -172,6 +198,7 @@ class Telegraph {
     String? author_url,
     required List content,
     bool return_content = true,
+    Client? httpClient,
   }) async {
     Map parameters = {
       "access_token": access_token,
@@ -187,7 +214,8 @@ class Telegraph {
       parameters["author_url"] = author_url;
     }
 
-    Map result = await invoke(method: "createPage", parameters: parameters, method_request: "post");
+    Map result = await invoke(method: "createPage", parameters: parameters, method_request: "post", 
+      httpClient: httpClient,);
 
     return result;
   }
@@ -201,6 +229,7 @@ class Telegraph {
     String? author_name,
     String? author_url,
     bool return_content = true,
+    Client? httpClient,
   }) async {
     Map parameters = {
       "access_token": access_token,
@@ -221,6 +250,7 @@ class Telegraph {
       parameters: parameters,
       path_api: path,
       method_request: "post",
+      httpClient: httpClient,
     );
 
     return result;
@@ -230,6 +260,7 @@ class Telegraph {
   Future<Map> getPage({
     required String path,
     bool return_content = true,
+    Client? httpClient,
   }) async {
     Map parameters = {
       "return_content": return_content,
@@ -239,6 +270,7 @@ class Telegraph {
       method: "getPage",
       parameters: parameters,
       path_api: path,
+      httpClient: httpClient,
     );
     return result;
   }
@@ -248,6 +280,7 @@ class Telegraph {
     required String access_token,
     int offset = 0,
     int limit = 50,
+    Client? httpClient,
   }) async {
     Map parameters = {
       "access_token": access_token,
@@ -258,6 +291,7 @@ class Telegraph {
     Map result = await invoke(
       method: "getPageList",
       parameters: parameters,
+      httpClient: httpClient,
       // path_api: path,
     );
     return result;
@@ -271,6 +305,7 @@ class Telegraph {
     String? author_name,
     String? author_url,
     bool return_content = true,
+    Client? httpClient,
   }) async {
     Map page_data = await getPage(path: path, return_content: true);
     return await createPage(
@@ -290,6 +325,7 @@ class Telegraph {
     int? month,
     int? day,
     int? hour,
+    Client? httpClient,
   }) async {
     Map parameters = {
       "year": year,
@@ -302,6 +338,7 @@ class Telegraph {
       method: "getViews",
       parameters: parameters,
       path_api: path,
+      httpClient: httpClient,
     );
     return result;
   }
