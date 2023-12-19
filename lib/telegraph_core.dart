@@ -69,7 +69,8 @@ class Telegraph {
     );
     late Response response;
     if (method == "post") {
-      response = await httpClient.post(uri, body: json.encode(parameters), headers: headers);
+      response = await httpClient.post(uri,
+          body: json.encode(parameters), headers: headers);
     } else {
       response = await httpClient.get(uri, headers: headers);
     }
@@ -87,7 +88,9 @@ class Telegraph {
     }
     if (result["result"] is Map) {
       Map new_data = {
-        "@type": method.replaceAll(RegExp("^(create|get|copy)", caseSensitive: false), "").toLowerCaseFirstData(),
+        "@type": method
+            .replaceAll(RegExp("^(create|get|copy)", caseSensitive: false), "")
+            .toLowerCaseFirstData(),
         ...(result["result"] as Map),
       };
 
@@ -364,13 +367,13 @@ class Telegraph {
     MultipartRequest form = MultipartRequest("post", url);
 
     for (var i = 0; i < telegraphFileDatas.length; i++) {
-      TelegraphFileData telegraphFileData = telegraphFileDatas[i]; 
+      TelegraphFileData telegraphFileData = telegraphFileDatas[i];
 
       MultipartFile file = MultipartFile.fromBytes(
         "file_${i}",
-        telegraphFileData.bytes,
-        filename: telegraphFileData.name,
-        contentType: MediaType.parse(telegraphFileData.mime),
+        telegraphFileData.file_bytes,
+        filename: telegraphFileData.file_mime,
+        contentType: MediaType.parse(telegraphFileData.file_mime),
       );
       form.files.add(file);
     }

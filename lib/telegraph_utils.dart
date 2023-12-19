@@ -15,12 +15,10 @@ class TelegraphUtils {
 
     return markdown_text;
   }
+
   static String parseHtml({required String content}) {
     return content;
   }
 
-  static domToNode() {
-    
-  }
-
+  static domToNode() {}
 }
