@@ -9,3 +9,6 @@ test/
 *.webm
 
 *.png
+*.js
+*.js.deps
+*.js.map
