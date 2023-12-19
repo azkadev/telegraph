@@ -1,9 +1,13 @@
-// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import
+// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import, unnecessary_brace_in_string_interps
 
+import "dart:async";
 import "dart:convert";
+import "dart:io";
 
 import "package:http/http.dart";
 import "package:general_lib/general_lib.dart";
+import "package:http_parser/http_parser.dart";
+import "package:telegraph/telegraph_file.dart";
 
 /// DOCS: https://telegra.ph/api
 class Telegraph {
@@ -214,8 +218,12 @@ class Telegraph {
       parameters["author_url"] = author_url;
     }
 
-    Map result = await invoke(method: "createPage", parameters: parameters, method_request: "post", 
-      httpClient: httpClient,);
+    Map result = await invoke(
+      method: "createPage",
+      parameters: parameters,
+      method_request: "post",
+      httpClient: httpClient,
+    );
 
     return result;
   }
@@ -341,5 +349,97 @@ class Telegraph {
       httpClient: httpClient,
     );
     return result;
+  }
+
+  Future<Map> upload({
+    required List<TelegraphFileData> telegraphFileDatas,
+    // required Uint8List blob,
+    Client? httpClient,
+    bool isThrowOnError = true,
+    void Function(int bytesCount, int totalBytes)? onUploadProgress,
+  }) async {
+    Uri url = Uri.parse("https://telegra.ph/upload");
+    HttpClient httpClientForm = HttpClient();
+    HttpClientRequest request = await httpClientForm.postUrl(url);
+    MultipartRequest form = MultipartRequest("post", url);
+
+    for (var i = 0; i < telegraphFileDatas.length; i++) {
+      TelegraphFileData telegraphFileData = telegraphFileDatas[i]; 
+
+      MultipartFile file = MultipartFile.fromBytes(
+        "file_${i}",
+        telegraphFileData.bytes,
+        filename: telegraphFileData.name,
+        contentType: MediaType.parse(telegraphFileData.mime),
+      );
+      form.files.add(file);
+    }
+
+    ByteStream msStream = form.finalize();
+    int totalByteLength = form.contentLength;
+    request.contentLength = totalByteLength;
+    request.headers.set(
+      HttpHeaders.contentTypeHeader,
+      form.headers[HttpHeaders.contentTypeHeader]!,
+    );
+    int byteCount = 0;
+    Stream<List<int>> streamUpload = msStream.transform(
+      StreamTransformer.fromHandlers(
+        handleData: (data, sink) {
+          sink.add(data);
+          byteCount += data.length;
+          if (onUploadProgress != null) {
+            onUploadProgress(byteCount, totalByteLength);
+          }
+        },
+        handleError: (error, stack, sink) {
+          throw error;
+        },
+        handleDone: (sink) {
+          sink.close();
+        },
+      ),
+    );
+    await request.addStream(streamUpload);
+    HttpClientResponse httpResponse = await request.close();
+    var statusCode = httpResponse.statusCode;
+    Completer<String> completer = Completer<String>();
+    StringBuffer contents = StringBuffer();
+    httpResponse.transform(utf8.decoder).listen(
+      (String data) {
+        contents.write(data);
+      },
+      onDone: () => completer.complete(contents.toString()),
+    );
+    dynamic bodys = json.decode(await completer.future);
+    if (statusCode == 200) {
+      if (bodys is List) {
+        List<Map> files = [];
+        for (var i = 0; i < bodys.length; i++) {
+          dynamic body = bodys[i];
+          if (body is Map) {
+            files.add({"url": "https://telegra.ph${body["src"]}"});
+          }
+        }
+
+        return {
+          "@type": "files",
+          "total_count": files.length,
+          "files": files,
+        };
+      }
+      return {
+        "@type": "error",
+        ...bodys,
+      };
+      // return `https://telegra.ph${json[0].src}`;
+      // return body;
+    } else {
+      if (isThrowOnError) {
+        throw bodys;
+      } else {
+        return bodys;
+      }
+    }
   }
 }

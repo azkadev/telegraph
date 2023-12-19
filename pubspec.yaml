@@ -1,16 +1,19 @@
 name: telegraph
 description: A Library Telegraph.
-version: 0.0.2
+version: 0.0.3
 repository: https://github.com/azkadev/telegraph.git
 
 environment:
-  sdk: ^3.1.0
+  sdk: ^3.0.0
 
 # Add regular dependencies here.
 dependencies:
   general_lib: ^0.0.1
   http: ^1.1.0
+  http_parser: ^4.0.2
   markdown: ^7.1.1
+  mime: ^1.0.4
+  path: ^1.9.0
   # path: ^1.8.0
 
 dev_dependencies:

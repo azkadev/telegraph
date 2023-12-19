@@ -3,3 +3,9 @@
 .dart_tool/
 
 test/
+
+*.mp4
+*.mp3
+*.webm
+
+*.png
