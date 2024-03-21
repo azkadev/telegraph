@@ -1,28 +1,16 @@
-# Telegraph libray
+IyBUZWxlZ3JhcGggbGlicmF5CgojIyBJbnN0YWxsIGxpYnJhcnkKYGBgYmFz
+aApkYXJ0IHB1YiBhZGQgdGVsZWdyYXBoCmBgYAoKIyMgSW1wb3J0IGxpYnJh
+cnkKYGBgZGFydAppbXBvcnQgJ3BhY2thZ2U6dGVsZWdyYXBoL3RlbGVncmFw
+aC5kYXJ0JzsgCmBgYAoKCiMjIFF1aWNrc3RhcnQKYGBgZGFydAovLyBpZ25v
+cmVfZm9yX2ZpbGU6IGRlcGVuZF9vbl9yZWZlcmVuY2VkX3BhY2thZ2VzCmlt
+cG9ydCAnZGFydDppbyc7CmltcG9ydCAncGFja2FnZTp0ZWxlZ3JhcGgvdGVs
+ZWdyYXBoLmRhcnQnOyAKdm9pZCBtYWluKExpc3Q8U3RyaW5nPiBhcmd1bWVu
+dHMpIGFzeW5jIHsKICBUZWxlZ3JhcGggdGVsZWdyYXBoID0gVGVsZWdyYXBo
+KCk7CiAgdmFyIHJlcyA9IGF3YWl0IHRlbGVncmFwaC5jcmVhdGVBY2NvdW50
+KAogICAgc2hvcnRfbmFtZTogInNhbHBzYWxwc3BsYXMiLAogICAgYXV0aG9y
+X25hbWU6ICJTYXNhc2FzYSIsCiAgKTsKICBwcmludChyZXMpOwogIGV4aXQo
+MCk7Cn0KYGBg
 
-## Install library
-```bash
-dart pub add telegraph
-```
-
-## Import library
-```dart
-import 'package:telegraph/telegraph.dart'; 
-```
-
-
-## Quickstart
-```dart
-// ignore_for_file: depend_on_referenced_packages
-import 'dart:io';
-import 'package:telegraph/telegraph.dart'; 
-void main(List<String> arguments) async {
-  Telegraph telegraph = Telegraph();
-  var res = await telegraph.createAccount(
-    short_name: "salpsalpsplas",
-    author_name: "Sasasasa",
-  );
-  print(res);
-  exit(0);
-}
-```
+<!-- START GLOBAL CORPORATION -->
+404: Not Found
+<!-- END GLOBAL CORPORATION -->
