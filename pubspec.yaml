@@ -1,6 +1,6 @@
 name: telegraph
-description: A Library Telegraph.
-version: 0.0.3
+description: Telegraph Dart Library For interact with api telegraph.
+version: 0.0.4
 repository: https://github.com/azkadev/telegraph.git
 homepage: https://youtube.com/@azkadev
 issue_tracker: https://github.com/azkadev/telegraph.git
@@ -11,7 +11,7 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  general_lib: ^0.0.6
+  general_lib: ^0.0.43
   http: ^1.1.0
   http_parser: ^4.0.2
   markdown: ^7.1.1
