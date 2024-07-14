@@ -1,24 +1,22 @@
-name: telegraph
-description: Telegraph Dart Library For interact with api telegraph.
-version: 0.0.4
-repository: https://github.com/azkadev/telegraph.git
-homepage: https://youtube.com/@azkadev
-issue_tracker: https://github.com/azkadev/telegraph.git
-
-
-environment:
-  sdk: ^3.0.0
-
-# Add regular dependencies here.
-dependencies:
-  general_lib: ^0.0.43
-  http: ^1.2.1
-  http_parser: ^4.0.2
-  markdown: ^7.2.2
-  mime: ^1.0.5
-  path: ^1.9.0
-  # path: ^1.8.0
-
-dev_dependencies:
-  lints: ^3.0.0
-  test: ^1.21.0
+name: 'telegraph'
+description: 'Telegraph Dart Library For interact with api telegraph.'
+version: '0.0.4'
+repository: 'https://github.com/azkadev/telegraph.git'
+homepage: 'https://youtube.com/@azkadev'
+issue_tracker: 'https://github.com/azkadev/telegraph.git'
+environment: 
+  sdk: '>=3.3.3 <4.0.0'
+dependencies: 
+  general_lib: '^0.0.43'
+  http: '^1.2.1'
+  http_parser: '^4.0.2'
+  markdown: '^7.2.2'
+  mime: '^1.0.5'
+  path: '^1.9.0'
+dev_dependencies: 
+  lints: '^3.0.0'
+  test: '^1.21.0'
+dependency_overrides: 
+  pointycastle: '3.8.0'
+funding: 
+  - 'https://github.com/sponsors/azkadev'

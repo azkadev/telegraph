@@ -12,3 +12,11 @@ test/
 *.js
 *.js.deps
 *.js.map
+*.exe
+*.deb
+*.sqlite-*
+*.sqlite
+docs/canvaskit
+*/canvaskit
+/build/
+generate_glx_*
