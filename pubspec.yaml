@@ -1,13 +1,13 @@
 name: 'telegraph'
 description: 'Telegraph Dart Library For interact with api telegraph.'
-version: '0.0.4'
+version: '0.0.5'
 repository: 'https://github.com/azkadev/telegraph.git'
 homepage: 'https://youtube.com/@azkadev'
 issue_tracker: 'https://github.com/azkadev/telegraph.git'
 environment:
   sdk: '>=3.6.0 <4.0.0'
 dependencies:
-  general_lib: '^0.0.53'
+  general_lib: '^0.0.56'
   http: '^1.2.2'
   http_parser: '^4.0.2'
   markdown: '^7.2.2'

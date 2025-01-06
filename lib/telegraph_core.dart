@@ -103,7 +103,8 @@ class Telegraph {
     );
     late Response response;
     if (method == "post") {
-      response = await httpClient.post(uri, body: json.encode(parameters), headers: headers);
+      response = await httpClient.post(uri,
+          body: json.encode(parameters), headers: headers);
     } else {
       response = await httpClient.get(uri, headers: headers);
     }
@@ -121,7 +122,9 @@ class Telegraph {
     }
     if (result["result"] is Map) {
       Map new_data = {
-        "@type": method.replaceAll(RegExp("^(create|get|copy)", caseSensitive: false), "").toLowerCaseFirstData(),
+        "@type": method
+            .replaceAll(RegExp("^(create|get|copy)", caseSensitive: false), "")
+            .toLowerCaseFirstData(),
         ...(result["result"] as Map),
       };
 
