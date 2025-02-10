@@ -7,7 +7,7 @@ issue_tracker: 'https://github.com/azkadev/telegraph.git'
 environment:
   sdk: '>=3.6.0 <4.0.0'
 dependencies:
-  general_lib: '^0.0.62'
+  general_lib: '^0.0.63'
   http: '^1.2.2'
   http_parser: '^4.0.2'
   markdown: '^7.2.2'
