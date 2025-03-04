@@ -7,8 +7,8 @@ issue_tracker: 'https://github.com/azkadev/telegraph.git'
 environment:
   sdk: '>=3.6.0 <4.0.0'
 dependencies:
-  general_lib: '^0.0.63'
-  http: '^1.2.2'
+  general_lib: '^0.0.67'
+  http: '^1.3.0'
   http_parser: '^4.0.2'
   markdown: '^7.2.2'
   mime: '^2.0.0'
@@ -17,9 +17,11 @@ dev_dependencies:
   lints: '^5.0.0'
   test: 'any'
 dependency_overrides:
-  pointycastle: '3.8.0'
+  pointycastle: '4.0.0'
   mime: '^2.0.0'
 funding:
   - 'https://github.com/sponsors/azkadev'
   - 'https://github.com/sponsors/generalfoss'
 documentation: 'https://youtube.com/@azkadev'
+project:
+  type: ''
